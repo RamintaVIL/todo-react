@@ -1,3 +1,5 @@
+import { FormCreateTask } from './components/form/Form';
+
 function App() {
     const style = {
         borderLeftColor: '#ff0000',
@@ -5,11 +7,7 @@ function App() {
     return (
         <main>
             <h1>Todo</h1>
-            <form>
-                <input type="text" value="" />
-                <input type="color" />
-                <button type="submit">Create Task</button>
-            </form>
+            <FormCreateTask />
             <div className="list-action">
                 <div className="title">Rikiavimas:</div>
                 <button>Laikas 0-9</button>
