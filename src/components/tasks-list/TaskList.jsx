@@ -1,7 +1,7 @@
 import { Task } from './Task';
 
 export function TaskList() {
-    const data = [];
+    const data = [1, 1, 1, 1, 1];
 
     if (data.length === 0) {
         return <div className="list empty">Empty</div>;
