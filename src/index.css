@@ -24,13 +24,20 @@ form {
   width: 100%;
 }
 
-form>input,
-form>button {
-  min-height: 2.8rem;
+form>input {
+  font-size: 1.2rem;
+  padding: 0.3em 0.5em;
+}
+
+form>.btnList {
+  display: flex;
+}
+
+form button {
   width: 100%;
-  font-size: 2rem;
+  font-size: 1.2rem;
   padding: 0.3rem 0.5rem;
-  line-height: 2rem;
+  line-height: 1rem;
 }
 
 
