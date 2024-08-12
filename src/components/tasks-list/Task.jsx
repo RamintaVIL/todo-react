@@ -7,6 +7,8 @@ export function Task(params) {
     // arba galem pasirasyti sitaip:
     // const {text} = params.data;
 
+    const [taskVisibility, setTaskVisibility] = useState(true);
+    const [taskDone, setTaskDone] = useState(false);
     const [editForm, setEditForm] = useState(false);
     const [taskText, setTaskText] = useState(text);
     const [inputText, setInputText] = useState(text);
@@ -28,61 +30,103 @@ export function Task(params) {
         if (cleanText !== '') {
             setTaskText(cleanText);
             setInputText(cleanText);
-            setEditForm(false);
+            setEditForm((prev) => false);
         }
     }
 
+    if (taskVisibility === false) {
+        return;
+    }
+
     return (
-        <div className="list">
-            <article className="item" data-state="" style={style}>
-                <div className="date">2024-08-08 11:38:20</div>
-                <div className="state">Atlikta</div>
-                <div className="text">{taskText}</div>
-                <form
-                    onSubmit={handleUpdate}
-                    className={editForm ? '' : 'hidden'}
-                >
-                    <input
-                        onChange={(e) => setInputText(e.target.value)}
-                        type="text"
-                        value={inputText}
-                    />
-                    <div className="btnList">
-                        <button
-                            onClick={() => setInputText(taskText)}
-                            className="clear"
-                            type="reset"
-                        >
-                            Reset
-                        </button>
-                        <button
-                            onClick={() => setInputText('')}
-                            className="clear"
-                            type="reset"
-                        >
-                            Clear
-                        </button>
-                        <button className="update" type="submit">
-                            Update
-                        </button>
-                        <button
-                            onClick={() => setEditForm(false)}
-                            className="cancel"
-                            type="button"
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-                <div className="actions">
-                    <button className="done">Done</button>
-                    <div className="divider"></div>
-                    <button className="edit" onClick={() => setEditForm(true)}>
-                        Edit
+        <article
+            className="item"
+            data-state={taskDone ? 'done' : ''}
+            style={style}
+        >
+            <div className="date">2024-08-08 11:38:20</div>
+            <div className="state">Atlikta</div>
+            <div className="text">{taskText}</div>
+            <form onSubmit={handleUpdate} className={editForm ? '' : 'hidden'}>
+                <input
+                    onChange={(e) => setInputText(e.target.value)}
+                    type="text"
+                    value={inputText}
+                />
+                <div className="btnList">
+                    <button
+                        onClick={() => setInputText(taskText)}
+                        className="clear"
+                        type="reset"
+                    >
+                        Reset
                     </button>
-                    <button className="delete">Delete</button>
+                    <button
+                        onClick={() => setInputText('')}
+                        className="clear"
+                        type="reset"
+                    >
+                        Clear
+                    </button>
+                    <button className="update" type="submit">
+                        Update
+                    </button>
+                    <button
+                        onClick={() => setEditForm((prev) => false)}
+                        className="cancel"
+                        type="button"
+                    >
+                        Cancel
+                    </button>
                 </div>
-            </article>
-        </div>
+            </form>
+            <div className="actions">
+                {!taskDone && (
+                    <>
+                        <button
+                            onClick={() => setTaskDone(true)}
+                            className="done"
+                        >
+                            Done
+                        </button>
+                        <div className="divider"></div>
+
+                        <button
+                            className="edit"
+                            onClick={() => setEditForm((prev) => true)}
+                        >
+                            Edit
+                        </button>
+                    </>
+                )}
+
+                <button
+                    onClick={() => setTaskVisibility((prev) => false)}
+                    className="delete"
+                >
+                    Delete
+                </button>
+            </div>
+        </article>
     );
 }
+
+// ternary uzrasymo budas button edit ir done:
+/* <div className="actions">
+    {taskDone === true ? (
+        <></>
+    ) : (
+        <>
+            <button onClick={() => setTaskDone(true)} className="done">
+                Done
+            </button>
+            <div className="divider"></div>
+            <button className="edit" onClick={() => setEditForm(true)}>
+                Edit
+            </button>
+        </>
+    )}
+    <button onClick={() => setTaskVisibility(false)} className="delete">
+        Delete
+    </button>
+</div>; */
