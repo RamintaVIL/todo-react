@@ -3,6 +3,7 @@ import { useState } from 'react';
 export function Task(params) {
     const data = params.data;
     const text = data.text;
+    const { removeTask } = params;
 
     // arba galem pasirasyti sitaip:
     // const {text} = params.data;
@@ -100,10 +101,7 @@ export function Task(params) {
                     </>
                 )}
 
-                <button
-                    onClick={() => setTaskVisibility((prev) => false)}
-                    className="delete"
-                >
+                <button onClick={() => removeTask(taskText)} className="delete">
                     Delete
                 </button>
             </div>

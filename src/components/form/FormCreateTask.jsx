@@ -1,15 +1,16 @@
 import { useState } from 'react';
 
-export function FormCreateTask() {
+export function FormCreateTask(props) {
+    const { addTaskCallback } = props;
     const [task, setTask] = useState('');
     const [color, setColor] = useState('#ff0000');
 
-    function handleFormSubmit() {
+    function handleFormSubmit(e) {
         e.preventDefault();
         if (task.trim() === '') {
             return;
         }
-        console.log('task');
+        addTaskCallback(task);
     }
     return (
         <form onSubmit={handleFormSubmit}>
