@@ -6,7 +6,7 @@ import { tasks } from './data/tasks.js';
 
 function App() {
     const [taskList, setTaskList] = useState(tasks);
-    const [count, setCount] = useState(0);
+    // const [count, setCount] = useState(0);
 
     function handleTaskListClick() {
         setTaskList((prev) => [
@@ -17,16 +17,16 @@ function App() {
         ]);
     }
 
+    function
+
     return (
         <main>
             <h1 onClick={handleTaskListClick}>Todo</h1>
             <div>
                 <p>Viso užduočių: {taskList.length}</p>
                 <p>Neatliktos užduotys: {taskList.length}</p>
-                <p>Atliktos užduotys</p>
-                <p onClick={() => setCount((prevCount) => prevCount + 1)}>
-                    Ištrintos užduotys: {count}
-                </p>
+                <p>Atliktos užduotys:</p>
+                <p>Ištrintos užduotys:</p>
             </div>
             <FormCreateTask />
             <ListActions />
@@ -36,3 +36,7 @@ function App() {
 }
 
 export default App;
+
+//  <p onClick={() => setCount((prevCount) => prevCount + 1)}>
+//      Ištrintos užduotys: {count}
+//  </p>;
