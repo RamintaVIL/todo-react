@@ -6,19 +6,51 @@ import { tasks } from './data/tasks.js';
 
 function App() {
     const [taskList, setTaskList] = useState(tasks);
+    const [id, setId] = useState(tasks.at(-1).id);
     // const [count, setCount] = useState(0);
     // prideti nauja uzduoti
-    function addTask(taskText) {
+    function addTask(taskText, taskColor) {
         setTaskList((prev) => [
             ...prev,
             {
+                id: id + 1,
                 text: taskText,
+                color: taskColor,
+                state: 'todo',
             },
         ]);
+        setId((prev) => prev + 1);
     }
 
-    function removeTask(taskText) {
-        setTaskList((prev) => prev.filter((task) => task.text !== taskText));
+    function updateTaskText(id, newText) {
+        setTaskList((prev) =>
+            prev.map((task) => ({
+                ...task,
+                text: task.id === id ? newText : task.text,
+            }))
+        );
+    }
+
+    function updateTaskColor(id, newColor) {
+        setTaskList((prev) =>
+            prev.map((task) => ({
+                ...task,
+                color: task.id === id ? newColor : task.color,
+            }))
+        );
+    }
+
+    function updateTaskState(id) {
+        setTaskList((prev) =>
+            prev.map((task) => ({
+                ...task,
+                state: task.id === id ? 'done' : task.state,
+            }))
+        );
+    }
+
+    function removeTask(id) {
+        setTaskList((prev) => prev.filter((task) => task.id !== id));
     }
 
     return (
@@ -32,7 +64,13 @@ function App() {
             </div>
             <FormCreateTask addTaskCallback={addTask} />
             <ListActions />
-            <TaskList data={taskList} removeTask={removeTask} />
+            <TaskList
+                data={taskList}
+                removeTask={removeTask}
+                updateTaskText={updateTaskText}
+                updateTaskColor={updateTaskColor}
+                updateTaskState={updateTaskState}
+            />
         </main>
     );
 }

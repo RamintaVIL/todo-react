@@ -3,16 +3,21 @@ import { useState } from 'react';
 export function Task(params) {
     const data = params.data;
     const text = data.text;
-    const { removeTask } = params;
+    const color = data.color;
+    const id = data.id;
+    const state = data.state;
+    const { removeTask, updateTaskText, updateTaskColor, updateTaskState } =
+        params;
 
     // arba galem pasirasyti sitaip:
     // const {text} = params.data;
 
     const [taskVisibility, setTaskVisibility] = useState(true);
-    const [taskDone, setTaskDone] = useState(false);
+    // reiketu istrinti, nes tam turime state
+    // const [taskDone, setTaskDone] = useState(false);
     const [editForm, setEditForm] = useState(false);
-    const [taskText, setTaskText] = useState(text);
     const [inputText, setInputText] = useState(text);
+    const [inputColor, setInputColor] = useState(color);
 
     // hooks'ai
     // const [count, setCount] = useState(0);
@@ -21,7 +26,7 @@ export function Task(params) {
     //     setCount(count + 1);
 
     const style = {
-        borderLeftColor: '#ff0000',
+        borderLeftColor: color ?? '#ccc',
     };
 
     function handleUpdate(e) {
@@ -29,10 +34,22 @@ export function Task(params) {
 
         const cleanText = inputText.trim();
         if (cleanText !== '') {
-            setTaskText(cleanText);
-            setInputText(cleanText);
-            setEditForm((prev) => false);
+            updateTaskText(id, cleanText);
+            updateTaskColor(id, inputColor);
+            setEditForm(false);
         }
+    }
+
+    function handleDelete() {
+        removeTask(id);
+    }
+    function handleReset() {
+        setInputText(text);
+        setInputColor(color);
+    }
+    function handleClear() {
+        setInputText('');
+        setInputColor('#cccccc');
     }
 
     if (taskVisibility === false) {
@@ -42,28 +59,33 @@ export function Task(params) {
     return (
         <article
             className="item"
-            data-state={taskDone ? 'done' : ''}
+            data-state={state === 'done' ? 'done' : ''}
             style={style}
         >
             <div className="date">2024-08-08 11:38:20</div>
             <div className="state">Atlikta</div>
-            <div className="text">{taskText}</div>
+            <div className="text">{text}</div>
             <form onSubmit={handleUpdate} className={editForm ? '' : 'hidden'}>
                 <input
                     onChange={(e) => setInputText(e.target.value)}
                     type="text"
                     value={inputText}
                 />
+                <input
+                    onChange={(e) => setInputColor(e.target.value)}
+                    type="color"
+                    value={inputColor}
+                />
                 <div className="btnList">
                     <button
-                        onClick={() => setInputText(taskText)}
+                        onClick={handleReset}
                         className="clear"
                         type="reset"
                     >
                         Reset
                     </button>
                     <button
-                        onClick={() => setInputText('')}
+                        onClick={handleClear}
                         className="clear"
                         type="reset"
                     >
@@ -82,10 +104,10 @@ export function Task(params) {
                 </div>
             </form>
             <div className="actions">
-                {!taskDone && (
+                {state !== 'done' && (
                     <>
                         <button
-                            onClick={() => setTaskDone(true)}
+                            onClick={() => updateTaskState(id)}
                             className="done"
                         >
                             Done
@@ -101,7 +123,7 @@ export function Task(params) {
                     </>
                 )}
 
-                <button onClick={() => removeTask(taskText)} className="delete">
+                <button onClick={handleDelete} className="delete">
                     Delete
                 </button>
             </div>
