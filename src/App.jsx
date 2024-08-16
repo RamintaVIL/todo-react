@@ -1,14 +1,39 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormCreateTask } from './components/form/FormCreateTask.jsx';
 import { ListActions } from './components/list-action/ListActions';
 import { TaskList } from './components/tasks-list/TaskList';
-import { tasks } from './data/tasks.js';
+// import { tasks } from './data/tasks.js';
 
 function App() {
-    const [taskList, setTaskList] = useState(tasks);
-    const [id, setId] = useState(tasks.at(-1).id);
+    const storageKey = 'todo-data';
+    const [taskList, setTaskList] = useState([]);
+    const [id, setId] = useState(0);
     // const [count, setCount] = useState(0);
     // prideti nauja uzduoti
+
+    // kodo eiliskumas
+    // func, be antro parametro
+    // pasileidžia kai yra perpiešiamas komponentas
+    // useEffect(() => {
+    //     console.log('Pasileido APP komponentas...');
+    // });
+
+    // func + []
+    // antras parametras be reikšmių (tuščias masyvas)
+    // pasileidžia tik pirmą kartą piešiant komponentą
+    // useEffect(() => {
+    //     console.log('APP - tuscias masyvas');
+    // }, []);
+
+    // func + [...]
+    // antras parametras yra ne tuščias masyvas
+    // į jį įeina "useState" parametrai, kurių reikšmėms kintant
+    // reikia paleisti šią funkciją:
+
+    useEffect(() => {
+        localStorage.setItem(storageKey, JSON.stringify(taskList));
+    }, [taskList]);
+
     function addTask(taskText, taskColor) {
         setTaskList((prev) => [
             ...prev,
