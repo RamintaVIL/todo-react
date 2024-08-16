@@ -5,9 +5,10 @@ import { TaskList } from './components/tasks-list/TaskList';
 // import { tasks } from './data/tasks.js';
 
 function App() {
-    const storageKey = 'todo-data';
-    const [taskList, setTaskList] = useState([]);
-    const [id, setId] = useState(0);
+    const storageDataKey = 'todo-data';
+    const storageIdKey = 'todo-last-id';
+    const [taskList, setTaskList] = useState(readLocalData());
+    const [id, setId] = useState(readLocalId());
     // const [count, setCount] = useState(0);
     // prideti nauja uzduoti
 
@@ -31,8 +32,28 @@ function App() {
     // reikia paleisti šią funkciją:
 
     useEffect(() => {
-        localStorage.setItem(storageKey, JSON.stringify(taskList));
+        localStorage.setItem(storageDataKey, JSON.stringify(taskList));
     }, [taskList]);
+
+    useEffect(() => {
+        localStorage.setItem(storageIdKey, JSON.stringify(id));
+    }, [id]);
+
+    function readLocalData() {
+        const localData = localStorage.getItem(storageDataKey);
+        if (localData) {
+            return JSON.parse(localData);
+        }
+        return [];
+    }
+
+    function readLocalId() {
+        const localData = localStorage.getItem(storageIdKey);
+        if (localData) {
+            return JSON.parse(localData);
+        }
+        return 0;
+    }
 
     function addTask(taskText, taskColor) {
         setTaskList((prev) => [
